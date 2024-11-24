@@ -10,10 +10,7 @@ y = 0
 # Player
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, x, y, gravity):
-
-        # Player dimensions and position
-        self.gravity = gravity
+    def __init__(self, x, y):
 
         # Player image and animation
         self.images = []

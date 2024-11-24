@@ -1,36 +1,38 @@
 import pygame
 
-class Character:
-    spite = []
+# class Character:
+#     spite = []
     
-    def __init__(self, name):
-        self.name = name
-        self.health = 100
-        self.position = [[0,0],[0,0]] #0,0 is the center
-        self.spiteNum = 0
-        PastSelf.attempt += 1
+#     def __init__(self, name):
+#         self.name = name
+#         self.health = 100
+#         self.position = [[0,0],[0,0]] #0,0 is the center
+#         self.spiteNum = 0
+#         PastSelf.attempt += 1
     
-    def PicIncrement(self, x, y):
-        self.position[0][0] = self.position[0][0] + x
-        self.position[0][1] = self.position[0][1] + y
+#     def PicIncrement(self, x, y):
+#         self.position[0][0] = self.position[0][0] + x
+#         self.position[0][1] = self.position[0][1] + y
         
-    def PositionIncrement(self, x, y):
-        self.position[1][0] = self.position[1][0] + x
-        self.position[1][1] = self.position[1][1] + y
+#     def PositionIncrement(self, x, y):
+#         self.position[1][0] = self.position[1][0] + x
+#         self.position[1][1] = self.position[1][1] + y
         
-class Player(pygame.sprite.Sprite):
+class Player():
 
-    def __init__(self, x, y, size, frameSize, path): #path
-
+    def __init__(self, x, y, TILE_SIZE, path): #path
+    #def __init__(*args, **kwargs):
+    #    print(args, kwargs)
+     #   return
         # Player image and animation
         self.images = []
         for i in path:
-            self.images.append(pygame.image.load(path[i]))
+            self.images.append(pygame.image.load(i))
         self.maxImage = len(self.images)
         self.currentImage = 0
 
-        self.rect = pygame.Rect(x, y, size, size)
-        # self.rect = self.images[0].get_rect()
+        self.rect = self.images[0].get_rect()
+        self.rect.topleft = [x*TILE_SIZE, y*TILE_SIZE]
         # self.rect.x = x
         # self.rect.y = y
 
@@ -84,7 +86,7 @@ class Player(pygame.sprite.Sprite):
             if enemy.rect.x-self.rect.x <= distance and enemy.rect.y-self.rect.y <= distance:
                 enemy.health -= damage
                 enemy.render(enemy, img)
-                Zombie.ifDead()
+                Ghost.ifDead()
     
     
     # PLayer updates
@@ -146,21 +148,75 @@ class Player(pygame.sprite.Sprite):
 
 class Background():
 
-    def __init__(self, path, maze):
+    def __init__(self, path, maze, length, width, TILE_SIZE):
 
         self.path = path
         self.maze = maze
-
-    def update(self, character, TILE_SIZE, screen):
-        self.cMaze = self.maze[character.position[0], character.position[1]]
-        for row in range(len(self.cMaze)):
-            for column in range(len(self.cMaze[row])):
+        
+        self.rect = []
+        
+        for row in range(width):
+            n = []
+            for column in range(length):
                 x = column * TILE_SIZE
                 y = row * TILE_SIZE
-                tile = self.path[self.cMaze[row][column]]
-                screen.blit(tile, (x, y))
+                n.append(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
+            self.rect.append(n)
+        
 
-class Zombie():
+    # def update(self, character, TILE_SIZE, screen):
+    #     print(self.maze)
+    #     self.cMaze = self.maze[character.position[0]][character.position[1]]
+    #     print(self.cMaze)
+    #     # for row in range(3):
+    #     #     for column in range(3):
+    #     #         x = column * TILE_SIZE
+        #         y = row * TILE_SIZE
+        #         # self.rect[row][column].blit()
+        #         tile = self.path[self.cMaze[row][column]]
+        #         screen.blit(tile, (x, y))
+    
+    
+    def game_over_display(screen, font, SCREEN_WIDTH, sys):
+        """Displays game stats whenever time runs out"""
+        pass
+        # global attempts
+
+        # screen.fill(SKY_BLUE)
+        # game_over_txt = font.render("Game Over", True, WHITE)
+        # score_txt = font.render(f"Your score was: {score}", True, WHITE)
+        # top_score_txt = font.render(f"The high score is: {top_score}",True,WHITE)
+        # restart_txt = font.render("Press R to restart, or Q to quit",True, WHITE)
+
+        # #Draw the above text onto the screen
+        # screen.blit(game_over_txt, (SCREEN_WIDTH // 2 - game_over_txt.get_width() // 2, SCREEN_HEIGHT // 2 - 100))
+        # screen.blit(score_txt, (SCREEN_WIDTH // 2 - score_txt.get_width() // 2, SCREEN_HEIGHT // 2 - 50))
+        # screen.blit(top_score_txt, (SCREEN_WIDTH // 2 - top_score_txt.get_width() // 2, SCREEN_HEIGHT // 2))
+        # screen.blit(restart_txt, (SCREEN_WIDTH // 2 - restart_txt.get_width() // 2, SCREEN_HEIGHT // 2 + 50))
+        # pygame.display.update()
+
+        # Wait for restart or quit input
+        # input_waiting = True
+        # while input_waiting:
+        #     for event in pygame.event.get():
+        #         if event.type == pygame.QUIT:
+        #             pygame.quit()
+        #             sys.exit()
+        #         if event.type == pygame.KEYDOWN:
+        #             if event.key == pygame.K_r: # Press R to restart
+        #                 input_waiting = False
+        #                 game_loop() # Restart the game
+        #             elif event.key == pygame.K_q: # Press Q to quit
+        #                 pygame.quit()
+        #                 sys.exit()
+    
+    def ifGhost(self):
+        for i in len(self.cMaze):
+            for j in len(self.cMaze[1]):
+                if self.cMaze[i][j] == 8:
+                    return [i,j]
+
+class Ghost():
 
     def __init__(self, x, y):
 
@@ -195,13 +251,13 @@ class Zombie():
             del self
             
 
-class PastSelf(Character):
-    attempt = 0
-    spite = []
+# class PastSelf(Character):
+#     attempt = 0
+#     spite = []
     
-    def __init__(self, num):
-        self.num = num
-        self.health = 100
-        self.position = [[0,0],[0,0]] #0,0 is the center
-        self.spiteNum = 0
+#     def __init__(self, num):
+#         self.num = num
+#         self.health = 100
+#         self.position = [[0,0],[0,0]] #0,0 is the center
+#         self.spiteNum = 0
     

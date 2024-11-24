@@ -6,8 +6,8 @@ clock = pygame.time.Clock()
 TILE_SIZE = 64
 
 # Defining the window we will display our game on (in terms of pixels)
-SCREEN_WIDTH = TILE_SIZE * 9
-SCREEN_HEIGHT = TILE_SIZE * 9
+SCREEN_WIDTH = TILE_SIZE * 4
+SCREEN_HEIGHT = TILE_SIZE * 4
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # pygame.display.set_caption('Hungry Monkey')
 
